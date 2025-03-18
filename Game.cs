@@ -16,7 +16,7 @@ namespace Hanged_Man
         private int faultsAssigned_;
         private int LettersFound_;
         private int maxFaults_;
-        private Dictionary<int, string> letters_;
+        private Dictionary<int, char> letters_;
         private bool isRunning_ = true;
 
         public Record Process_() {

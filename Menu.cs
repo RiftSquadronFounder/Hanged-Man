@@ -18,6 +18,7 @@ namespace Hanged_Man
         private string wordsFileName_ = "words.txt";
         private List<string> wordsAvialable_ = new List<string>();
         public List<Record> Records;
+        Game game = new Game();
 
 
 
@@ -167,7 +168,7 @@ namespace Hanged_Man
                 word = Console.ReadLine();
 
                 Console.Clear();
-                Console.Write($"Вы ввели слово:\n\t{word}\nВерно?\n\t1) Да, добавить слово\n\t2) Ввести заново\n\t3) Отменить действие");
+                Console.Write($"Вы ввели слово:\n\t{word}\nВерно?\n\t1) Да, добавить слово\n\t2) Ввести заново\n\n\tQ) Отменить действие");
                 var Key = Console.ReadKey(true);
                 try
                 {
@@ -322,6 +323,35 @@ namespace Hanged_Man
 
 
 
+        void DisplayRecords() { 
+            for(int i = 0; i < Records.Count; i++)
+            {
+                Record pl = Records[i];
+                string word = pl.GetWord(), rWord = "";
+                for(int k = 0; k < word.Length; k++)
+                {
+                    if (pl.GetLetters()[i] != null) {
+                        word = $"{word}{pl.GetLetters()[i]}";    
+                    }
+                    else { word = $"{word}_"; }
+
+                }
+                Console.Write
+                    ("________________________________________ \n" +
+                    $"| Имя игрока        >> {pl.GetName()} \n" +
+                    $"| Угаданные буквы   >> {pl.GetRightGuesses()} \n" +
+                    $"| Провалено         >> {pl.GetWrongGuesses()} \n" +
+                    $"| \n" +
+                    $"| Изначальное слово >> {pl.GetWord()} \n" +
+                    $"| Полученное слово  >> ");
+            }
+        
+        
+        }
+
+
+
+
         public void Out()
         {
             int choice = -1;
@@ -357,7 +387,7 @@ namespace Hanged_Man
                 choice = Int32.Parse(Key.KeyChar.ToString());
                 if(choice == 1)
                 {
-
+                    Records.Add()
                 }
                 else if(choice == 2)
                 {

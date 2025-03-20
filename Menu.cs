@@ -17,8 +17,8 @@ namespace Hanged_Man
         private string recordsFileName_ = "records.txt";
         private string wordsFileName_ = "words.txt";
         private List<string> wordsAvialable_ = new List<string>();
-        public List<Record> Records;
-        Game game = new Game();
+        public List<Record> Records = new List<Record>();
+        
 
 
 
@@ -29,92 +29,210 @@ namespace Hanged_Man
         public List<Record> GetRecords() { return Records; }
 
 
-
         public void ReadRecords()
         {
+            
+            Records.Clear();
             if (File.Exists(recordsFileName_))
             {
-                string FileContainings = File.ReadAllText(recordsFileName_), word = "", dictionary = "";
+                List<string> words = new List<string>();
+                string FileContainings = File.ReadAllText(recordsFileName_), word = "", dictionary = "", revealList = "";
                 int counter = 0;
-                bool dictMode = false;
-                Dictionary<int, char> letters = new Dictionary<int, char>();
+                words = FileContainings.Split('|').ToList();
                 Record rec = new Record();
 
-                for (int i = 0; i < FileContainings.Length; i++)
+
+                for (int i = 0; i < words.Count; i++)
                 {
-                    if (!dictMode)
+                    counter++;
+                    /*Console.Write($"{counter} - ");
+                    if (words[i] != "")
                     {
-                        if (FileContainings != "|")
-                        {
-                            word = word + FileContainings[i];
-                        }
-                        else
-                        {
-                            if (counter == 0)
-                            {
-                                rec.setName(word);
-                            }
-                            else if (counter == 1)
-                            {
-                                rec.setWord(word);
-                            }
-                            else if (counter == 2)
-                            {
-                                rec.setFaults(Int32.Parse(word));
-                            }
-                            else if (counter == 3)
-                            {
-                                rec.setRightChoices(Int32.Parse(word));
-                            }
-                            else if (counter == 4)
-                            {
-                                counter = -1;
-                                dictMode = true;
-                            }
-                            counter++;
-                            word = "";
-                        }
+                        Console.WriteLine($"{words[i]}");
+                        
                     }
                     else
                     {
-                        if (FileContainings != "|")
+                        Console.WriteLine("###");
+                    }*/
+                    if (counter == 1)
+                    {
+                        rec.setName(words[i]);
+                    }
+                    else if (counter == 2)
+                    {
+                        rec.setWord(words[i]);
+                    }
+                    else if (counter == 3)
+                    {
+                        rec.setFaults(Int32.Parse(words[i]));
+                    }
+                    else if (counter == 4)
+                    {
+                        rec.setRightChoices(Int32.Parse(words[i]));
+                    }
+                    else if (counter == 5)
+                    {
+                        try
                         {
-                            dictionary = dictionary + FileContainings[i];
-                        }
-                        else
-                        {
-                            dictMode = false;
-                            for (int k = 0; k < dictionary.Length; k++)
+                            for (int k = 0; k < words[i].Length; k++)
                             {
-                                if (k % 2 == 0)
+                                rec.AddLettersFound(Int32.Parse(words[i][k].ToString()));
+                            }
+                        }
+                        catch { }
+                    }
+                    else if (counter == 6)
+                    {
+                        try
+                        {
+                            for (int k = 0; k < words[i].Length; k++)
+                            {
+                                rec.AddPreRevealed(Int32.Parse(words[i][k].ToString()));
+                            }
+                        }
+                        catch { }
+
+                        counter = 0;
+                        Records.Add(rec);
+                        rec = new Record();
+                    }
+                }
+                //Console.ReadLine();
+
+
+            }
+        }
+
+        /*public void ReadRecords()
+        {
+            try
+            {
+                Records.Clear();
+                if (File.Exists(recordsFileName_))
+                {
+                    
+                    string FileContainings = File.ReadAllText(recordsFileName_), word = "", dictionary = "", revealList = "";
+                    int counter = 0;
+                    bool dictMode = false, revMode = false;
+                    List<int> LettersFound_ = new List<int>();
+                    List<int> preRevealed = new List<int>();
+                    Record rec = new Record();
+
+                    for (int i = 0; i < FileContainings.Length; i++)
+                    {
+                        if (!dictMode || !revMode)
+                        {
+                            if (FileContainings[i] != '|')
+                            {
+                                
+                                word = word + FileContainings[i];
+                            }
+                            else
+                            {
+                                if (counter == 0)
+                                {
+                                    rec.setName(word);
+                                }
+                                else if (counter == 1)
+                                {
+                                    rec.setWord(word);
+                                }
+                                else if (counter == 2)
+                                {
+                                    rec.setFaults(Int32.Parse(word));
+                                }
+                                else if (counter == 3)
+                                {
+                                    rec.setRightChoices(Int32.Parse(word));
+                                }
+                                else if (counter == 4)
+                                {
+                                    dictMode = true;
+                                }
+                                else if (counter == 5) {
+                                    counter = -1;
+                                    revMode = true;
+                                }
+
+                                
+
+                                
+                               
+
+
+
+                                counter++;
+                                word = "";
+                            }
+                        }
+                        if (dictMode)
+                        {
+                            if (FileContainings[i] != '|')
+                            {
+                                dictionary = dictionary + FileContainings[i];
+                            }
+                            else
+                            {
+                                dictMode = false;
+                                for (int k = 0; k < dictionary.Length; k++)
                                 {
                                     try
                                     {
-                                        letters.Add(Int32.Parse(dictionary), dictionary[k + 1]);
+                                        LettersFound_.Add(Int32.Parse(dictionary[k].ToString()));
                                     }
                                     catch { Console.WriteLine("Error: (Не удалось извлечь символ)"); }
+
                                 }
+
+                                
                             }
-
-                            Records.Add(rec);
-                            rec = new Record();
                         }
-                    }
+                        Console.WriteLine(FileContainings[i]);
+                        
+                        if (revMode)
+                        {
+                            Console.WriteLine("------>>>>>>" + FileContainings[i]);
+                            Console.ReadLine();
 
+                            if (FileContainings[i] != '|')
+                            {
+                                revealList = revealList + FileContainings[i];
+                                Console.WriteLine("^^^^^^^^");
+                            }
+                            else
+                            {
+                                revMode = false;
+                                for (int k = 0; k < revealList.Length; k++)
+                                {
+                                    try
+                                    {
+                                        preRevealed.Add(Int32.Parse(revealList[k].ToString()));
+                                    }
+                                    catch { Console.WriteLine("Error: (Не удалось извлечь символ)"); }
+
+                                }
+                                Console.WriteLine("SAVIIING!!!!! _--------__---->");
+                                Records.Add(rec);
+                                rec = new Record();
+                            }
+                        }                  
+                    }
                 }
             }
-        }
+            catch (Exception ex) { Console.WriteLine(ex); Console.ReadLine(); }
+        }*/
 
         public void RewriteRecords()
         {
             string saveLine = "";
 
-
+            
             for (int i = 0; i < Records.Count; i++)
             {
                 Record r = Records[i];
                 saveLine = $"{saveLine}{r.GetName()}|{r.GetWord()}|{r.GetWrongGuesses()}|{r.GetRightGuesses()}|" +
-                    $"{string.Join("", r.GetLetters().Select(kv => $"{kv.Key}{kv.Value}"))}";
+                    $"{string.Join("", r.GetLetters())}|{string.Join("", r.GetRevealed())}|";
             }
 
 
@@ -125,6 +243,7 @@ namespace Hanged_Man
         {
             if (File.Exists(wordsFileName_))
             {
+
                 string FileContainings = File.ReadAllText(wordsFileName_), word = "";
 
                 for (int i = 0; i < FileContainings.Length; i++)
@@ -177,19 +296,17 @@ namespace Hanged_Man
                     {
                         wordsAvialable_.Add(word);
                         RewriteAvialableWords();
+                        task = false;
                     }
                     else if (choice == 2)
                     {
 
                     }
-                    else if (choice == 3)
-                    {
-                        task = false;
-                    }
+                    
                 }
                 catch { }
                 if (Key.KeyChar.ToString().ToLower() == "q" || Key.KeyChar.ToString().ToLower() == "й")
-                { Console.Clear(); Environment.Exit(0); }
+                { task = false; }
 
             }
         }
@@ -323,17 +440,23 @@ namespace Hanged_Man
 
 
 
-        void DisplayRecords() { 
-            for(int i = 0; i < Records.Count; i++)
+        void DisplayRecords() {
+            Console.WriteLine("\n\n Начало истории рекордов!!\n\n");
+            for (int i = 0; i < Records.Count; i++)
             {
                 Record pl = Records[i];
                 string word = pl.GetWord(), rWord = "";
                 for(int k = 0; k < word.Length; k++)
                 {
-                    if (pl.GetLetters()[i] != null) {
-                        word = $"{word}{pl.GetLetters()[i]}";    
+                    /*for(int b = 0; b < pl.GetLetters().Count; b++)
+                    {
+                        Console.WriteLine(pl.GetLetters()[b]);
+
+                    }*/
+                    if (pl.GetLetters().Contains(k) || pl.GetRevealed().Contains(k) ) {
+                        rWord = $"{rWord}{word[k]}";    
                     }
-                    else { word = $"{word}_"; }
+                    else { rWord = $"{rWord}_"; }
 
                 }
                 Console.Write
@@ -343,9 +466,10 @@ namespace Hanged_Man
                     $"| Провалено         >> {pl.GetWrongGuesses()} \n" +
                     $"| \n" +
                     $"| Изначальное слово >> {pl.GetWord()} \n" +
-                    $"| Полученное слово  >> ");
+                    $"| Полученное слово  >> {rWord}\n\n");
             }
-        
+            Console.WriteLine("\n\nНажмите Enter, для того, чтобы перейти обратно в меню");
+            Console.ReadLine();
         
         }
 
@@ -387,7 +511,14 @@ namespace Hanged_Man
                 choice = Int32.Parse(Key.KeyChar.ToString());
                 if(choice == 1)
                 {
-                    Records.Add()
+                    Game game = new Game(UserName_,faults,revealed, wordsAvialable_);
+                    Record match = game.Play();
+
+                    if (match.GetWrongGuesses() > 0 || match.GetRightGuesses() > 0)
+                    {
+                        Records.Add(match);
+                        RewriteRecords();
+                    }
                 }
                 else if(choice == 2)
                 {
@@ -395,10 +526,10 @@ namespace Hanged_Man
                 }
                 else if(choice == 3)
                 {
-
+                    DisplayRecords();
                 }
             }
-            catch { }
+            catch {  }
             if (Key.KeyChar.ToString().ToLower() == "q" || Key.KeyChar.ToString().ToLower() == "й") 
             { Console.Clear();  Environment.Exit(0); }
         }

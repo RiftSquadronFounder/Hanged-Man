@@ -16,7 +16,7 @@ namespace Hanged_Man
             Menu menu = new Menu();
             while(run)
             {
-                
+                menu.ReadRecords();
                 menu.Out();
                 
 

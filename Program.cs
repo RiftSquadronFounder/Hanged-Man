@@ -12,20 +12,9 @@ namespace Hanged_Man
     {
         static void Main(string[] args)
         {
-            bool run = true;
             Menu menu = new Menu();
-            while(run)
-            {
-                menu.ReadRecords();
-                menu.Out();
-                
-
-                
-
-            }
-           
-            
+            menu.ReadRecords();
+            menu.Out();
         }
-
     }
 }

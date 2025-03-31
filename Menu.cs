@@ -10,8 +10,6 @@ namespace Hanged_Man
 {
     internal class Menu
     {
-
-
         private int faults = 3, revealed = 2;
         private string UserName_;
         private string recordsFileName_ = "records.txt";
@@ -36,7 +34,7 @@ namespace Hanged_Man
             if (File.Exists(recordsFileName_))
             {
                 List<string> words = new List<string>();
-                string FileContainings = File.ReadAllText(recordsFileName_), word = "", dictionary = "", revealList = "";
+                string FileContainings = File.ReadAllText(recordsFileName_);
                 int counter = 0;
                 words = FileContainings.Split('|').ToList();
                 Record rec = new Record();
@@ -45,16 +43,6 @@ namespace Hanged_Man
                 for (int i = 0; i < words.Count; i++)
                 {
                     counter++;
-                    /*Console.Write($"{counter} - ");
-                    if (words[i] != "")
-                    {
-                        Console.WriteLine($"{words[i]}");
-                        
-                    }
-                    else
-                    {
-                        Console.WriteLine("###");
-                    }*/
                     if (counter == 1)
                     {
                         rec.setName(words[i]);
@@ -98,131 +86,12 @@ namespace Hanged_Man
                         rec = new Record();
                     }
                 }
-                //Console.ReadLine();
 
 
             }
         }
 
-        /*public void ReadRecords()
-        {
-            try
-            {
-                Records.Clear();
-                if (File.Exists(recordsFileName_))
-                {
-                    
-                    string FileContainings = File.ReadAllText(recordsFileName_), word = "", dictionary = "", revealList = "";
-                    int counter = 0;
-                    bool dictMode = false, revMode = false;
-                    List<int> LettersFound_ = new List<int>();
-                    List<int> preRevealed = new List<int>();
-                    Record rec = new Record();
-
-                    for (int i = 0; i < FileContainings.Length; i++)
-                    {
-                        if (!dictMode || !revMode)
-                        {
-                            if (FileContainings[i] != '|')
-                            {
-                                
-                                word = word + FileContainings[i];
-                            }
-                            else
-                            {
-                                if (counter == 0)
-                                {
-                                    rec.setName(word);
-                                }
-                                else if (counter == 1)
-                                {
-                                    rec.setWord(word);
-                                }
-                                else if (counter == 2)
-                                {
-                                    rec.setFaults(Int32.Parse(word));
-                                }
-                                else if (counter == 3)
-                                {
-                                    rec.setRightChoices(Int32.Parse(word));
-                                }
-                                else if (counter == 4)
-                                {
-                                    dictMode = true;
-                                }
-                                else if (counter == 5) {
-                                    counter = -1;
-                                    revMode = true;
-                                }
-
-                                
-
-                                
-                               
-
-
-
-                                counter++;
-                                word = "";
-                            }
-                        }
-                        if (dictMode)
-                        {
-                            if (FileContainings[i] != '|')
-                            {
-                                dictionary = dictionary + FileContainings[i];
-                            }
-                            else
-                            {
-                                dictMode = false;
-                                for (int k = 0; k < dictionary.Length; k++)
-                                {
-                                    try
-                                    {
-                                        LettersFound_.Add(Int32.Parse(dictionary[k].ToString()));
-                                    }
-                                    catch { Console.WriteLine("Error: (Не удалось извлечь символ)"); }
-
-                                }
-
-                                
-                            }
-                        }
-                        Console.WriteLine(FileContainings[i]);
-                        
-                        if (revMode)
-                        {
-                            Console.WriteLine("------>>>>>>" + FileContainings[i]);
-                            Console.ReadLine();
-
-                            if (FileContainings[i] != '|')
-                            {
-                                revealList = revealList + FileContainings[i];
-                                Console.WriteLine("^^^^^^^^");
-                            }
-                            else
-                            {
-                                revMode = false;
-                                for (int k = 0; k < revealList.Length; k++)
-                                {
-                                    try
-                                    {
-                                        preRevealed.Add(Int32.Parse(revealList[k].ToString()));
-                                    }
-                                    catch { Console.WriteLine("Error: (Не удалось извлечь символ)"); }
-
-                                }
-                                Console.WriteLine("SAVIIING!!!!! _--------__---->");
-                                Records.Add(rec);
-                                rec = new Record();
-                            }
-                        }                  
-                    }
-                }
-            }
-            catch (Exception ex) { Console.WriteLine(ex); Console.ReadLine(); }
-        }*/
-
+       
         public void RewriteRecords()
         {
             string saveLine = "";
@@ -410,7 +279,7 @@ namespace Hanged_Man
                 Console.Clear();
                 Console.Write("Выберите опцию:" +
                     "\n\t1) Изменить кол-во открытых букв" +
-                    "\n\t2) Изменить макс. Кол-во ошибок" +
+                    "\n\t2) Изменить макс. Кол-во ошибsок" +
                     "\n\t3) Добавить новое слово" +
                     "\n\n\tQ) Назад\n\n");
 
@@ -489,49 +358,52 @@ namespace Hanged_Man
             {
                 ReadRecords();
             }
-            
-            Console.Clear();
-            
-            Console.WriteLine(" ____  _   _  ____ _____ _____    _   _  _    _        _    ");
-            Console.WriteLine("| __ )| | | |/ ___| ____|_ _  |  | | | || |  | |      / \\   ");
-            Console.WriteLine("|  _ \\| | | | |   |  _|  | || |  | | | || |  | |     / _ \\  ");
-            Console.WriteLine("| |_) | |_| | |___| |___ | || |_ | |_| || |__| |__  /____ \\ ");
-            Console.WriteLine("|____/ \\____|\\____|_____|__|\\___| \\____||_________|/_/   \\_\\");
 
-
-
-
-
-            Console.Write("\n\nДобро пожаловать... На кровавую... Арену смерти!\n");
-            Console.Write("Выберите пункт:\n\t1) Начать игру\n\t2) Параметры\n\t3) Рекорды\n\n\tQ) Выход\n\n");
-            
-            var Key = Console.ReadKey(true);
-            try
+            while (true)
             {
-                choice = Int32.Parse(Key.KeyChar.ToString());
-                if(choice == 1)
-                {
-                    Game game = new Game(UserName_,faults,revealed, wordsAvialable_);
-                    Record match = game.Play();
+                Console.Clear();
 
-                    if (match.GetWrongGuesses() > 0 || match.GetRightGuesses() > 0)
+                Console.WriteLine(" ____  _   _  ____ _____ _____    _   _  _    _        _    ");
+                Console.WriteLine("| __ )| | | |/ ___| ____|_ _  |  | | | || |  | |      / \\   ");
+                Console.WriteLine("|  _ \\| | | | |   |  _|  | || |  | | | || |  | |     / _ \\  ");
+                Console.WriteLine("| |_) | |_| | |___| |___ | || |_ | |_| || |__| |__  /____ \\ ");
+                Console.WriteLine("|____/ \\____|\\____|_____|__|\\___| \\____||_________|/_/   \\_\\");
+
+                
+
+
+
+                Console.Write("\n\nДобро пожаловать... На кровавую... Арену смерти!\n");
+                Console.Write("Выберите пункт:\n\t1) Начать игру\n\t2) Параметры\n\t3) Рекорды\n\n\tQ) Выход\n\n");
+
+                var Key = Console.ReadKey(true);
+                try
+                {
+                    choice = Int32.Parse(Key.KeyChar.ToString());
+                    if (choice == 1)
                     {
-                        Records.Add(match);
-                        RewriteRecords();
+                        Game game = new Game(UserName_, faults, revealed, wordsAvialable_);
+                        Record match = game.Play();
+
+                        if (match.GetWrongGuesses() > 0 || match.GetRightGuesses() > 0)
+                        {
+                            Records.Add(match);
+                            RewriteRecords();
+                        }
+                    }
+                    else if (choice == 2)
+                    {
+                        Settings();
+                    }
+                    else if (choice == 3)
+                    {
+                        DisplayRecords();
                     }
                 }
-                else if(choice == 2)
-                {
-                    Settings();
-                }
-                else if(choice == 3)
-                {
-                    DisplayRecords();
-                }
+                catch { }
+                if (Key.KeyChar.ToString().ToLower() == "q" || Key.KeyChar.ToString().ToLower() == "й")
+                { Console.Clear(); Environment.Exit(0); }
             }
-            catch {  }
-            if (Key.KeyChar.ToString().ToLower() == "q" || Key.KeyChar.ToString().ToLower() == "й") 
-            { Console.Clear();  Environment.Exit(0); }
         }
     }
 }
